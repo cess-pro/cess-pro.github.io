@@ -3,9 +3,11 @@
   <entry>
     <title>博客站点开发进度</title>
     <url>//post/bloging.html</url>
-    <content><![CDATA[<p>[x] hexo部署</p>
-<p>[x] 域名绑定</p>
-<p>[ ] 开启评论功能</p>
+    <content><![CDATA[<ul>
+<li><input checked="" disabled="" type="checkbox"> hexo部署</li>
+<li><input checked="" disabled="" type="checkbox"> 域名绑定</li>
+<li><input disabled="" type="checkbox"> 开启评论功能</li>
+</ul>
 ]]></content>
       <tags>
         <tag>Misc</tag>
