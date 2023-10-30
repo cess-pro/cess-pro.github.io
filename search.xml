@@ -9,6 +9,9 @@
 <li><input disabled="" type="checkbox"> 开启评论功能</li>
 </ul>
 ]]></content>
+      <categories>
+        <category>Life</category>
+      </categories>
       <tags>
         <tag>Misc</tag>
       </tags>
