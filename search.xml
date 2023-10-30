@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>TsuKing Attack</title>
+    <url>//post/TsuKing.html</url>
+    <content><![CDATA[<h1 id="TsuKing-Coordinating-DNS-Resolvers-and-Queries-into-Potent-DoS-Amplifiers"><a href="#TsuKing-Coordinating-DNS-Resolvers-and-Queries-into-Potent-DoS-Amplifiers" class="headerlink" title="TsuKing: Coordinating DNS Resolvers and Queries into Potent DoS Amplifiers"></a>TsuKing: Coordinating DNS Resolvers and Queries into Potent DoS Amplifiers</h1><p>we present a new DNS amplification attack, named TsuKing. Instead of exploiting individual DNS resolvers indepen- dently to achieve an amplification effect, TsuKing deftly coordi- nates numerous vulnerable DNS resolvers and crafted queries together to form potent DoS amplifiers. We demonstrate that with TsuKing, an initial small amplification factor can increase exponentially through the internal layers of coordinated amplifiers, resulting in an extremely powerful amplification attack. TsuKing has three variants, including DNSRetry, DNSChain, and DNSLoop, all of which exploit a suite of inconsistent DNS implementations to achieve enormous amplification effect. With comprehensive mea- surements, we found that about 14.5% of 1.3M open DNS resolvers are potentially vulnerable to TsuKing. Real-world controlled eval- uations indicated that attackers can achieve a packet amplification factor of at least 3,700× (DNSChain). We have reported vulner- abilities to affected vendors and provided them with mitigation recommendations. We have received positive responses from 6 vendors, including Unbound, MikroTik, and AliDNS, and 3 CVEs were assigned. Some of them are implementing our recommendations.</p>
+]]></content>
+      <categories>
+        <category>Tsinghua</category>
+      </categories>
+      <tags>
+        <tag>Paper</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>博客站点开发进度</title>
     <url>//post/bloging.html</url>
     <content><![CDATA[<ul>
 <li><input checked="" disabled="" type="checkbox"> hexo部署</li>
 <li><input checked="" disabled="" type="checkbox"> 域名绑定</li>
 <li><input disabled="" type="checkbox"> 开启评论功能</li>
+<li><input disabled="" type="checkbox"> about界面内容</li>
 </ul>
 ]]></content>
       <categories>
