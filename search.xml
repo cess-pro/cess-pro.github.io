@@ -88,7 +88,7 @@
 <li>Run the virtual machine, and from it, download and open the StoreX86.zip file. Open the .reg file inside Windows.</li>
 <li>When prompted to add information to the registry, click Yes.</li>
 <li>Run the virtual machine and open PowerShell.</li>
-<li>Execute the following command：<pre><code>wsreset.exe -i 
+<li>Execute the following command：<pre><code>wsreset.exe -i      # need proxy
 </code></pre>
 </li>
 <li>Once the installation is over, the Store should be available through search.</li>
