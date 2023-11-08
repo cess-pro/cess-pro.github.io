@@ -74,4 +74,42 @@
 <p>More info: <a class="link"   href="https://hexo.io/docs/one-command-deployment.html" >Deployment <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
 ]]></content>
   </entry>
+  <entry>
+    <title>在Win11 ARM中安装AppStore （M1/2）</title>
+    <url>//post/install-appstore-in-win11arm64.html</url>
+    <content><![CDATA[<h1 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h1><p>当你在Apple M系列芯片的电脑中安装了Win11 ARM后，会发现没有应用市场</p>
+<h1 id="黑心"><a href="#黑心" class="headerlink" title="黑心"></a>黑心</h1><p>PD曾经给出过解决办法，但现在他们的公告是更新到最新的PD就可以解决这个问题，不得不说富哥真好</p>
+<h1 id="解决之道"><a href="#解决之道" class="headerlink" title="解决之道"></a>解决之道</h1><blockquote>
+<p><a class="link"   href="https://www.youtube.com/watch?v=5k0CQnEAh2g" >https://www.youtube.com/watch?v=5k0CQnEAh2g <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+</blockquote>
+<p>核心原理是找到PD公告的历史版本（有才）</p>
+<p>以下是搬运：</p>
+<h2 id="Install-Microsoft-Store-manually"><a href="#Install-Microsoft-Store-manually" class="headerlink" title="Install Microsoft Store manually"></a>Install Microsoft Store manually</h2><ol>
+<li>Run the virtual machine, and from it, download and open the StoreX86.zip file. Open the .reg file inside Windows.</li>
+<li>When prompted to add information to the registry, click Yes.</li>
+<li>Run the virtual machine and open PowerShell.</li>
+<li>Execute the following command：<pre><code>wsreset.exe -i 
+</code></pre>
+</li>
+<li>Once the installation is over, the Store should be available through search.</li>
+</ol>
+<p>Since the first launch will be accompanied by an update, it may take a couple of minutes.</p>
+<h2 id="Fix-Microsoft-Store-closing-on-start"><a href="#Fix-Microsoft-Store-closing-on-start" class="headerlink" title="Fix Microsoft Store closing on start"></a>Fix Microsoft Store closing on start</h2><p>If you already have Microsoft Store installed in Windows 11 on a Mac with Apple M1 Chip, but it immediately closes after being opened, perform the following steps:</p>
+<ol>
+<li>Run the virtual machine and open PowerShell.</li>
+<li>Execute the following command:<pre><code>Get-AppxPackage -Name &quot;Microsoft.WindowsStore&quot; -AllUsers | Remove-AppxPackage
+</code></pre>
+</li>
+<li>Restart Windows and perform the steps at the beginning of this article.</li>
+</ol>
+<p>最后附带上下载<a href="%22../files/StoreX86.zip%22">文件</a></p>
+]]></content>
+      <categories>
+        <category>Tech</category>
+      </categories>
+      <tags>
+        <tag>Windows</tag>
+        <tag>Win11 ARM</tag>
+      </tags>
+  </entry>
 </search>
