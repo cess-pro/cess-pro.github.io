@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>TsuKing Attack</title>
+    <url>/en/posts/TsuKing/</url>
+    <content><![CDATA[<h1 id="TsuKing-Coordinating-DNS-Resolvers-and-Queries-into-Potent-DoS-Amplifiers"><a href="#TsuKing-Coordinating-DNS-Resolvers-and-Queries-into-Potent-DoS-Amplifiers" class="headerlink" title="TsuKing: Coordinating DNS Resolvers and Queries into Potent DoS Amplifiers"></a>TsuKing: Coordinating DNS Resolvers and Queries into Potent DoS Amplifiers</h1><p>we present a new DNS amplification attack, named TsuKing. Instead of exploiting individual DNS resolvers indepen- dently to achieve an amplification effect, TsuKing deftly coordi- nates numerous vulnerable DNS resolvers and crafted queries together to form potent DoS amplifiers. We demonstrate that with TsuKing, an initial small amplification factor can increase exponentially through the internal layers of coordinated amplifiers, resulting in an extremely powerful amplification attack. TsuKing has three variants, including DNSRetry, DNSChain, and DNSLoop, all of which exploit a suite of inconsistent DNS implementations to achieve enormous amplification effect. With comprehensive mea- surements, we found that about 14.5% of 1.3M open DNS resolvers are potentially vulnerable to TsuKing. Real-world controlled eval- uations indicated that attackers can achieve a packet amplification factor of at least 3,700× (DNSChain). We have reported vulner- abilities to affected vendors and provided them with mitigation recommendations. We have received positive responses from 6 vendors, including Unbound, MikroTik, and AliDNS, and 3 CVEs were assigned. Some of them are implementing our recommendations.</p>
+]]></content>
+      <categories>
+        <category>Tsinghua</category>
+      </categories>
+      <tags>
+        <tag>Paper</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo Blogging in Both Chinese and English</title>
+    <url>/en/posts/myblog-with-both-zh-en-en/</url>
+    <content><![CDATA[<h1 id="Bilingualism-Makes-a-Blog-More-Professional"><a href="#Bilingualism-Makes-a-Blog-More-Professional" class="headerlink" title="Bilingualism Makes a Blog More Professional"></a>Bilingualism Makes a Blog More Professional</h1><p>This blog uses <code>butterfly</code> as its theme, which is quite aesthetically pleasing. The official example is also bilingual, but there is no relevant configuration found in the settings. However, I found an official demo that individually configures files for both languages and compiles them twice. Based on this, I have further optimized it for easier deployment.</p>
+<h1 id="Bilingual-Content"><a href="#Bilingual-Content" class="headerlink" title="Bilingual Content"></a>Bilingual Content</h1><p>Place bilingual files in the <code>_posts</code> directory under the <code>source</code> directory. The naming convention must be standardized:</p>
+<ol>
+<li>Chinese filename: <code>myblog_with_both_zh_en-zh.md</code></li>
+<li>English filename: <code>myblog_with_both_zh_en-en.md</code><br>Differentiation is made based on the suffix, which is also used for subsequent compilation.</li>
+</ol>
+<h1 id="Dual-Themes"><a href="#Dual-Themes" class="headerlink" title="&quot;Dual&quot; Themes"></a>&quot;Dual&quot; Themes</h1><ol>
+<li>Under the <code>themes</code> directory, create a theme named <code>butterfly-en</code>, which is essentially a copy of the <code>butterfly</code> theme.</li>
+<li>Prepare two theme configuration files: <code>_config.butterfly-en.yml</code> and <code>_config.butterfly.yml</code>, corresponding to the two themes respectively.</li>
+<li>This is done because when generating the <code>index.html</code> page, the top status bar needs to be distinguished in Chinese and English. The content of the top bar in the two files is as follows:</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># _config.butterfly.yml</span><br><span class="line">menu:</span><br><span class="line">  Home: / || fas fa-home</span><br><span class="line">  Research: /researchs || fas fa-flask</span><br><span class="line">  Navigation || fa-solid fa-compass:</span><br><span class="line">    Archives: /archives/ || fas fa-archive</span><br><span class="line">    Tags: /tags/ || fas fa-tags</span><br><span class="line">    Categories: /categories/ || fas fa-folder-open</span><br><span class="line">  # List||fas fa-list:</span><br><span class="line">  #   Music: /music/ || fas fa-music</span><br><span class="line">  #   Movies: /movies/ || fas fa-video</span><br><span class="line">  # Link: /link/ || fas fa-link</span><br><span class="line">  # About: /about/ || fas fa-heart</span><br><span class="line">  Language || fas fa-language:</span><br><span class="line">    English: /en/ || fas fa-e</span><br><span class="line">    Chinese: / || fas fa-c</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># _config.butterfly-en.yml</span><br><span class="line">menu:</span><br><span class="line">  Home: / || fas fa-home</span><br><span class="line">  Research: /researchs || fas fa-flask</span><br><span class="line">  Docs || fa-solid fa-compass:</span><br><span class="line">    Archives: /archives/ || fas fa-archive</span><br><span class="line">    Tags: /tags/ || fas fa-tags</span><br><span class="line">    Categories: /categories/ || fas fa-folder-open</span><br><span class="line">  # List||fas fa-list:</span><br><span class="line">  #   Music: /music/ || fas fa-music</span><br><span class="line">  #   Movies: /movies/ || fas fa-video</span><br><span class="line">  # Link: /link/ || fas fa-link</span><br><span class="line">  # About: /about/ || fas fa-heart</span><br><span class="line">  Language || fas fa-language:</span><br><span class="line">    English: /en/ || fas fa-e</span><br><span class="line">    Chinese: /../ || fas fa-c</span><br><span class="line">    # Note here, a static up-level jump is used because the root of the English page is /en/, and only this way can you jump to the upper-level Chinese page</span><br></pre></td></tr></table></figure>
+
+<h1 id="Dual-Configuration"><a href="#Dual-Configuration" class="headerlink" title="Dual Configuration"></a>Dual Configuration</h1><ol>
+<li><p>In <code>_config.yml</code>, add the following configuration changes:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">language: zh-CN</span><br><span class="line">root: /</span><br><span class="line">permalink: posts/:title/</span><br><span class="line">ignore:</span><br><span class="line">  - &quot;**/*-en.md&quot;    # Ignore English files</span><br><span class="line">theme: butterfly</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>In <code>config-en.yml</code>, add the following configuration changes:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">language: en</span><br><span class="line">root: /en/</span><br><span class="line">permalink: posts/:title/</span><br><span class="line">public_dir: public/en   # Directly generate output to the position, saving the subsequent move</span><br><span class="line">ignore:</span><br><span class="line">  - &quot;**/*-zh.md&quot;    # Ignore Chinese files</span><br><span class="line">theme: butterfly-en</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="Compilation"><a href="#Compilation" class="headerlink" title="Compilation"></a>Compilation</h1><p>When compiling, you need to switch between <code>config-en.yml</code> and <code>_config.yml</code> and compile twice.<br>Integrated script:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo gen</span><br><span class="line">hexo gen --config config-en.yml</span><br><span class="line">hexo depl</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Tech</category>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+</search>
