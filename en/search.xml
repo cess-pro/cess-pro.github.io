@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>Hello World</title>
+      <link href="/en/posts/hello-world-en/"/>
+      <url>/en/posts/hello-world-en/</url>
+      
+        <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>pwnable.tw#32</title>
+      <link href="/en/posts/pwnable-tw-32-en/"/>
+      <url>/en/posts/pwnable-tw-32-en/</url>
+      
+        <content type="html"><![CDATA[<h1 id="做个测试"><a href="#做个测试" class="headerlink" title="做个测试"></a>做个测试</h1>]]></content>
+      
+      
+      <categories>
+          
+          <category> CTF </category>
+          
+          <category> PWN </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> pwn </tag>
+            
+            <tag> pwnable.tw </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>TsuKing Attack</title>
+      <link href="/en/posts/TsuKing-en/"/>
+      <url>/en/posts/TsuKing-en/</url>
+      
+        <content type="html"><![CDATA[<h1 id="TsuKing-Coordinating-DNS-Resolvers-and-Queries-into-Potent-DoS-Amplifiers"><a href="#TsuKing-Coordinating-DNS-Resolvers-and-Queries-into-Potent-DoS-Amplifiers" class="headerlink" title="TsuKing: Coordinating DNS Resolvers and Queries into Potent DoS Amplifiers"></a>TsuKing: Coordinating DNS Resolvers and Queries into Potent DoS Amplifiers</h1><p>we present a new DNS amplification attack, named TsuKing. Instead of exploiting individual DNS resolvers indepen- dently to achieve an amplification effect, TsuKing deftly coordi- nates numerous vulnerable DNS resolvers and crafted queries together to form potent DoS amplifiers. We demonstrate that with TsuKing, an initial small amplification factor can increase exponentially through the internal layers of coordinated amplifiers, resulting in an extremely powerful amplification attack. TsuKing has three variants, including DNSRetry, DNSChain, and DNSLoop, all of which exploit a suite of inconsistent DNS implementations to achieve enormous amplification effect. With comprehensive mea- surements, we found that about 14.5% of 1.3M open DNS resolvers are potentially vulnerable to TsuKing. Real-world controlled eval- uations indicated that attackers can achieve a packet amplification factor of at least 3,700× (DNSChain). We have reported vulner- abilities to affected vendors and provided them with mitigation recommendations. We have received positive responses from 6 vendors, including Unbound, MikroTik, and AliDNS, and 3 CVEs were assigned. Some of them are implementing our recommendations.</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Tsinghua </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Paper </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>博客站点开发进度</title>
+      <link href="/en/posts/bloging-en/"/>
+      <url>/en/posts/bloging-en/</url>
+      
+        <content type="html"><![CDATA[<ul><li><input checked="" disabled="" type="checkbox"> hexo部署</li><li><input checked="" disabled="" type="checkbox"> 域名绑定</li><li><input disabled="" type="checkbox"> 开启评论功能</li><li><input disabled="" type="checkbox"> about界面内容</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> Life </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Misc </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+  
+  
+</search>
